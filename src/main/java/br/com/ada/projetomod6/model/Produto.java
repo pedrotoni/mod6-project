@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
