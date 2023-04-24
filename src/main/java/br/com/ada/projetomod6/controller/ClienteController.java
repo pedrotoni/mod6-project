@@ -36,7 +36,7 @@ public class ClienteController {
         return clienteService.buscarClientePorCpf(cpf);
     }
 
-    @PutMapping("/{id_cliente}")
+    @PutMapping
     public void atualizarCliente(@RequestBody Cliente cliente) {
         clienteService.atualizarCliente(cliente);
     }
