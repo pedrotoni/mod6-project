@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name="cliente")
 @Getter
@@ -20,5 +22,7 @@ public class Cliente {
     private String nome;
     @Column(nullable = false, unique = true)
     private String cpf;
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT '0.00'")
+    private BigDecimal saldo = BigDecimal.ZERO;
 
 }

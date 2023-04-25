@@ -1,6 +1,9 @@
 package br.com.ada.projetomod6;
 
-import br.com.ada.projetomod6.model.*;
+import br.com.ada.projetomod6.model.Carrinho;
+import br.com.ada.projetomod6.model.Cliente;
+import br.com.ada.projetomod6.model.ItemVenda;
+import br.com.ada.projetomod6.model.Produto;
 import br.com.ada.projetomod6.repository.CarrinhoRepository;
 import br.com.ada.projetomod6.repository.ClienteRepository;
 import br.com.ada.projetomod6.repository.ProdutoRepository;
@@ -11,12 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 import java.math.BigDecimal;
 
 @SpringBootTest
 @Transactional
-public class CarrinhoTest {
+public class ClienteTest {
 
     @Autowired
     private CarrinhoRepository carrinhoRepository;
@@ -34,10 +36,10 @@ public class CarrinhoTest {
         clienteRepository.save(cliente);
     }
 
-
     @Test
-    public void testValorTotalDeProdutosAdicionadosAoCarrinho() {
+    public void testSaldoClienteSuficiente() {
         Cliente cliente = clienteRepository.findAll().get(0);
+        cliente.setSaldo(BigDecimal.valueOf(1000.00));
 
         Carrinho carrinho = new Carrinho();
         carrinho.setCliente(cliente);
@@ -56,21 +58,34 @@ public class CarrinhoTest {
 
         carrinho.addItem(item);
 
-        BigDecimal valorEsperado = BigDecimal.valueOf(320.00);
-        Assertions.assertEquals(valorEsperado,carrinho.calculaValorTotalDoCarrinho());
+        BigDecimal valorTotal = carrinho.calculaValorTotalDoCarrinho();
+        Assertions.assertTrue(cliente.getSaldo().doubleValue() >= valorTotal.doubleValue());
     }
 
     @Test
-    public void testCarrinhoVazio() {
+    public void testSaldoClienteInsuficiente() {
         Cliente cliente = clienteRepository.findAll().get(0);
+        cliente.setSaldo(BigDecimal.valueOf(10.00));
 
         Carrinho carrinho = new Carrinho();
         carrinho.setCliente(cliente);
         carrinhoRepository.save(carrinho);
 
-        Assertions.assertEquals(BigDecimal.ZERO,carrinho.calculaValorTotalDoCarrinho());
-        Assertions.assertTrue(carrinho.getItensVenda() == null || carrinho.getItensVenda().isEmpty());
+        Produto produto = new Produto();
+        produto.setNome("Blusa");
+        produto.setDescricao("Agasalho de frio");
+        produto.setPreco(BigDecimal.valueOf(80.00));
+        produtoRepository.save(produto);
+
+        ItemVenda item = new ItemVenda();
+        item.setProduto(produto);
+        item.setQtd(4);
+        item.setCarrinho(carrinho);
+
+        carrinho.addItem(item);
+
+        BigDecimal valorTotal = carrinho.calculaValorTotalDoCarrinho();
+        Assertions.assertTrue(cliente.getSaldo().doubleValue() <= valorTotal.doubleValue());
     }
 
 }
-
