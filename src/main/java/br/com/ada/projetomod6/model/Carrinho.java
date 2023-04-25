@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +24,26 @@ public class Carrinho {
     @OneToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
-    @ManyToOne
-    @JoinColumn(name = "id_venda")
-    private Venda venda;
+    @OneToMany(mappedBy = "carrinho")
+    private List<ItemVenda> itensVenda;
+
+    public void addItem(ItemVenda item) {
+        if (itensVenda == null) {
+            itensVenda = new ArrayList<>();
+        }
+        item.setCarrinho(this);
+        itensVenda.add(item);
+    }
+
+    public BigDecimal calculaValorTotalDoCarrinho() {
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (itensVenda != null) {
+            for (ItemVenda item : itensVenda) {
+                valorTotal =
+                        valorTotal.add(item.getProduto().getPreco()
+                                .multiply(BigDecimal.valueOf(item.getQtd())));
+            }
+        }
+        return valorTotal;
+    }
 }

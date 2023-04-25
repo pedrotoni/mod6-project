@@ -21,4 +21,7 @@ public class ItemVenda {
     private Produto produto;
     @Column(nullable = false)
     private Integer qtd;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_carrinho", nullable = false)
+    private Carrinho carrinho;
 }

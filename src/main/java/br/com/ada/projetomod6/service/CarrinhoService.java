@@ -1,6 +1,8 @@
 package br.com.ada.projetomod6.service;
 
 import br.com.ada.projetomod6.model.Carrinho;
+import br.com.ada.projetomod6.model.ItemVenda;
+import br.com.ada.projetomod6.model.Produto;
 import br.com.ada.projetomod6.repository.CarrinhoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,7 @@ public class CarrinhoService {
         if (carrinhoOptional.isPresent()) {
             Carrinho carrinhoNovaVersao = carrinhoOptional.get();
             carrinhoNovaVersao.setCliente(carrinho.getCliente());
-            carrinhoNovaVersao.setVenda(carrinho.getVenda());
+            carrinhoNovaVersao.setItensVenda(carrinho.getItensVenda());
             carrinhoRepository.save(carrinhoNovaVersao);
         } else {
             throw new IllegalArgumentException
@@ -47,5 +49,12 @@ public class CarrinhoService {
 
     public void deletarCarrinho(Long id_carrinho) {
         this.carrinhoRepository.deleteById(id_carrinho);
+    }
+
+    public void adicionaProdutoNoCarrinho(Carrinho carrinho, Produto produto, Integer qtd) {
+        ItemVenda itemAddNoCarrinho = new ItemVenda();
+        itemAddNoCarrinho.setProduto(produto);
+        itemAddNoCarrinho.setQtd(qtd);
+        carrinho.addItem(itemAddNoCarrinho);
     }
 }
