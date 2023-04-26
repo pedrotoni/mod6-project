@@ -25,6 +25,38 @@ public class ProdutoTest {
     @Autowired
     private CarrinhoRepository carrinhoRepository;
 
+    //• O cliente adiciona um produto ao carrinho de compras
+    @Test
+    public void testAdicionarProdutoAoCarrinho() {
+        Cliente cliente = new Cliente();
+        cliente.setNome("Alexandre");
+        cliente.setCpf("30020010022");
+        cliente.setSaldo(BigDecimal.valueOf(5000.00));
+        clienteRepository.save(cliente);
+
+        Produto produto = new Produto();
+        produto.setNome("Caneta");
+        produto.setPreco(BigDecimal.valueOf(3.50));
+        produto.setDescricao("Instrumento de escrita");
+        produto.setQtdDisponivelEmEstoque(1000);
+        produtoRepository.save(produto);
+
+        Carrinho carrinho = new Carrinho();
+        carrinho.setCliente(cliente);
+
+        ItemVenda item = new ItemVenda();
+        item.setCarrinho(carrinho);
+        item.setProduto(produto);
+        item.setQtd(30);
+
+        carrinho.addItem(item);
+        carrinhoRepository.save(carrinho);
+
+        Assertions.assertEquals(1, carrinho.getItensVenda().size());
+        Assertions.assertEquals(item, carrinho.getItensVenda().get(0));
+    }
+
+    //• O sistema atualiza o estoque dos produtos comprados
     @Test
     public void testAtualizacaoCorretaDeEstoqueAposCompra() {
         Produto produto = new Produto();

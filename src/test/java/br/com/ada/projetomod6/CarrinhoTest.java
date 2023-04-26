@@ -34,7 +34,7 @@ public class CarrinhoTest {
         clienteRepository.save(cliente);
     }
 
-
+    //• O sistema atualiza o valor total do carrinho de compras
     @Test
     public void testValorTotalDeProdutosAdicionadosAoCarrinho() {
         Cliente cliente = clienteRepository.findAll().get(0);
@@ -61,6 +61,7 @@ public class CarrinhoTest {
         Assertions.assertEquals(valorEsperado,carrinho.calculaValorTotalDoCarrinho());
     }
 
+    //• O sistema verifica se o carrinho de compras está vazio
     @Test
     public void testCarrinhoVazio() {
         Cliente cliente = clienteRepository.findAll().get(0);

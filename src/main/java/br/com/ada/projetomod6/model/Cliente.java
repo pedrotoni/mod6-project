@@ -1,8 +1,6 @@
 package br.com.ada.projetomod6.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +8,7 @@ import lombok.Setter;
 
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name="cliente")
@@ -27,5 +26,9 @@ public class Cliente {
     private String cpf;
     @Column(nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT '0.00'")
     private BigDecimal saldo = BigDecimal.ZERO;
+    @OneToMany(mappedBy = "cliente")
+    @ElementCollection
+    private List<Venda> lista_vendas;
+
 
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,4 +25,6 @@ public class Venda {
     private Cliente cliente;
     @ElementCollection
     private List<ItemVenda> lista_itens;
+
+
 }
