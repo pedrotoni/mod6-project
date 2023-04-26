@@ -46,4 +46,14 @@ public class Carrinho {
         }
         return valorTotal;
     }
+
+    public List<ItemVenda> getItensDaVendaPeloProduto(Produto produto) {
+        List <ItemVenda> itensProduto = new ArrayList<>();
+        for (ItemVenda item_venda : this.itensVenda) {
+            if (item_venda.getProduto().equals(produto)) {
+                itensProduto.add(item_venda);
+            }
+        }
+        return itensProduto;
+    }
 }

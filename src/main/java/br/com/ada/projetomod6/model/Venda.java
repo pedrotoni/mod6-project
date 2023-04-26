@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,6 +26,5 @@ public class Venda {
     private Cliente cliente;
     @ElementCollection
     private List<ItemVenda> lista_itens;
-
 
 }
