@@ -47,6 +47,7 @@ public class CarrinhoTest {
         produto.setNome("Blusa");
         produto.setDescricao("Agasalho de frio");
         produto.setPreco(BigDecimal.valueOf(80.00));
+        produto.setQtdDisponivelEmEstoque(1);
         produtoRepository.save(produto);
 
         ItemVenda item = new ItemVenda();

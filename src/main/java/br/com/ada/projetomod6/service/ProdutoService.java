@@ -39,6 +39,7 @@ public class ProdutoService {
             produtoNovaVersao.setNome(produto.getNome());
             produtoNovaVersao.setDescricao(produto.getDescricao());
             produtoNovaVersao.setPreco(produto.getPreco());
+            produtoNovaVersao.setQtdDisponivelEmEstoque(produto.getQtdDisponivelEmEstoque());
             produtoRepository.save(produtoNovaVersao);
         } else {
             throw new IllegalArgumentException
