@@ -67,7 +67,7 @@ public class VendaTest {
         carrinho.addItem(item2);
         carrinhoRepository.save(carrinho);
 
-        return new Object[]{carrinho, produto, produto2};
+        return new Object[]{carrinho, produto, produto2, cliente};
     }
 
     //• Verificar se é possível buscar os itens de venda de um determinado produto
@@ -101,5 +101,32 @@ public class VendaTest {
 
         Assertions.assertEquals(10, item.getQtd());
         Assertions.assertEquals(produto.getPreco(),item.getProduto().getPreco());
+    }
+
+    @Test
+    public void testVerificaRetornoDeTodosOsItensDeVendaDoProduto() {
+        Object[] setUp = setUpItemVendaProduto();
+        Produto produto = (Produto) setUp[1];
+        Cliente cliente = (Cliente) setUp[3];
+
+        Carrinho carrinho = new Carrinho();
+        carrinho.setCliente(cliente);
+        carrinhoRepository.save(carrinho);
+
+        ItemVenda item1 = new ItemVenda();
+        item1.setProduto(produto);
+        item1.setQtd(50);
+        item1.setCarrinho(carrinho);
+        ItemVenda item2 = new ItemVenda();
+        item2.setProduto(produto);
+        item2.setQtd(35);
+        item2.setCarrinho(carrinho);
+        carrinho.addItem(item1);
+        carrinho.addItem(item2);
+
+        List<ItemVenda> listaItemVendaProduto = carrinho.getItensDaVendaPeloProduto(produto);
+        Assertions.assertEquals(2, listaItemVendaProduto.size());
+        Assertions.assertEquals(item1.getId_item(), listaItemVendaProduto.get(0).getId_item());
+        Assertions.assertEquals(item2.getId_item(), listaItemVendaProduto.get(1).getId_item());
     }
 }
